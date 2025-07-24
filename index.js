@@ -3,13 +3,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+
 app.use(express.json());
 app.use(cors());
 
-// MongoDB connect (nanti diisi di Railway)
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+// MongoDB connect pakai ENV dari Railway (bukan localhost)
+mongoose.connect(process.env.MONGODB_URI, {});
 
-// Schemas
 const UserSchema = new mongoose.Schema({
   username: String,
   password: String,
@@ -93,4 +93,5 @@ app.post('/api/scratch/:id', auth, async (req, res) => {
   res.json(ticket);
 });
 
-app.listen(5000, () => console.log('Backend running on port 5000'));
+// Listen port dari Railway
+app.listen(process.env.PORT || 3000, () => console.log('Backend running'));
